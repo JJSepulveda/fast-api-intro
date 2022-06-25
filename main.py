@@ -32,29 +32,77 @@ class HairColor(Enum):
 
 # Models
 class Location(BaseModel):
-	city: str
-	state: str
-	country: str
+	city: str = Field(
+		..., 
+		min_length=1,
+		max_length=50
+	)
+	state: str = Field(
+		..., 
+		min_length=1,
+		max_length=50
+	)
+	country: str = Field(
+		..., 
+		min_length=1,
+		max_length=50
+	)
 
+	class Config:
+		""" 
+		Clase para definir la información por defecto para las
+		pruebas en la documentación interactiva
+		"""
+		schema_extra = {
+			"example": {
+				"city": "Zapopan",
+				"state": "Jalisco",
+				"country": "Mexico",
+			}
+		}
 
 class Person(BaseModel):
 	first_name: str = Field(
 		..., 
 		min_length=1,
-		max_length=50
+		max_length=50,
+		example="Juan"
 	)
 	last_name: str = Field(
 		..., 
 		min_length=1,
-		max_length=50
+		max_length=50,
+		example="Lopez"
 	)
 	age: int= Field(
 		..., 
 		gt=0,
-		le=115
+		le=115,
+		example=25
 	)
-	hair_color: Optional[HairColor] = Field(default=None)
-	is_married: Optional[bool] = Field(default=None)
+	hair_color: Optional[HairColor] = Field(
+		default=None,
+		example="black"
+	)
+	is_married: Optional[bool] = Field(
+		default=None,
+		example=False
+	)
+
+	# class Config:
+	# 	""" 
+	# 	Clase para definir la información por defecto para las
+	# 	pruebas en la documentación interactiva
+	# 	"""
+	# 	schema_extra = {
+	# 		"example": {
+	# 			"first_name": "Juan",
+	# 			"last_name": "Sepulveda",
+	# 			"age": 20,
+	# 			"hair_color": "brown",
+	# 			"is_married": False
+	# 		}
+	# 	}
 
 
 # Path operation decoration
@@ -118,4 +166,3 @@ def update_person(
 	results.update(location.dict())
 
 	return results
-
